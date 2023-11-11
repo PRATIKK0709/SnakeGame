@@ -76,13 +76,21 @@ void Snake::addBodySegment(sf::Vector2i position) {
 }
 
 bool Snake::checkCollision() {
-    // Check if the snake has collided with itself
+    // Check if the snake has collided with the window boundaries or itself
     sf::Vector2i head = body.front();
+
+    // Check if the head is outside the window boundaries
+    if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
+        return true;
+    }
+
+    // Check if the snake has collided with itself
     for (auto it = body.begin() + 1; it != body.end(); ++it) {
         if (*it == head) {
             return true;
         }
     }
+
     return false;
 }
 
@@ -193,9 +201,9 @@ int main() {
             // Move the snake
             snake.move();
 
-            // Check for collisions with itself
+            // Check for collisions with itself or the window boundaries
             if (snake.checkCollision()) {
-                std::cout << "Game Over! Collision with self.\n";
+                std::cout << "Game Over! Collision with the window boundary or self.\n";
                 window.close();
             }
 
